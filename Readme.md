@@ -1,5 +1,7 @@
 This repository demonstrates an issue with the fast up-to-date checks in Visual Studio 2017 15.9.10 for projects which have `CopyToOutputDirectory` items but no project references.
 
+⚠ Note that this demonstration pertains only to modern, SDK-style C# projects. A similar issue happens with legacy projects, but the root cause seems to be different (the presence of project references doesn't matter) and the workarounds do not apply.
+
 The solution is set up as follows:
 
 * There are four projects:
@@ -64,6 +66,8 @@ In the case of editing `TextFileA.txt`, `TestProgram` is updated because the `Li
 4>FastUpToDate: Input marker is newer than output marker, not up to date. (TestProgram)
 4>FastUpToDate: Project is not up to date. (TestProgram)
 ```
+
+(The above output is printed by Visual Studio when the up-to-date checks logging is set to verbose in Tools > Options > Project and Solutions > .NET Core.)
 
 When you edit only `TextFileB.txt`, `TestProgram` is not updated because the `LibraryB.csproj.CopyComplete` marker doesn't exist:
 
