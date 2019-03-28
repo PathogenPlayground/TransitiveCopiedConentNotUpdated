@@ -109,3 +109,11 @@ I've added a small target to `LibraryB` that does this:
 Basically this just touches the `CopyComplete` file in the opposite condition that MSBuild is doing so already.
 
 This avoids the `Dummy.dll` issue, but it is unclear if this has unintended consequences since skipping the marker is presumably done for a reason.
+
+# Misc notes
+
+Note: This repository demonstrates the issue with a reference of a reference, but that is done only because:
+* I thought the initial issue only happened with references of rererences.
+* I wanted to demonstrate when the issue *doesn't* happen.
+
+If you remove the reference to `LibraryB` from `LibraryA`, the issue will start happening to `TextFileA.txt` too.
