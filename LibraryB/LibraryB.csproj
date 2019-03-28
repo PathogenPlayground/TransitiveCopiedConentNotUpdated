@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--
+    Adding a dummy project reference causes the copy marker to be created as expected.
+    As such, this causes the FastUpToDate check to consider dependees to be stale, so MSBuild will process them as expected.
+    This is because the CopyComplete marker is only created if the project has references: https://github.com/Microsoft/msbuild/blob/adb180d394176f36aca1cc2eac4455fef564739f/src/Tasks/Microsoft.Common.CurrentVersion.targets#L4348-L4393
+    <ProjectReference Include="..\Dummy\Dummy.csproj" />
+    -->
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="TextFileB.txt" UpToDateCheckOutput="true">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <!--
+  Here's a workaround that has the same result as adding a dummy project reference without the actual reference.
+  Basically if _CopyFilesMarkedCopyLocal doesn't touch the copy marker, this will touch it instead.
+  -->
+  <!--
+  <Target Name="MissingCopyMarkerWorkaround" AfterTargets="CopyFilesToOutputDirectory" Condition="'@(ReferenceCopyLocalPaths)' == '' or '@(ReferencesCopiedInThisBuild)' == ''">
+    <Touch Files="@(CopyUpToDateMarker)" AlwaysCreate="true">
+      <Output TaskParameter="TouchedFiles" ItemName="FileWrites" />
+    </Touch>
+  </Target>
+  -->
+
+</Project>
